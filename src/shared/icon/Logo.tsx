@@ -1,6 +1,6 @@
-export const Logo = () => {
+export const Logo = ({ className }: { className?: string }) => {
   return (
-    <svg width="43" height="56" viewBox="0 0 43 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="43" height="56" viewBox="0 0 43 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       <rect width="43" height="56" fill="url(#pattern0_696_945)" />
       <defs>
         <pattern id="pattern0_696_945" patternContentUnits="objectBoundingBox" width="1" height="1">

@@ -1,11 +1,11 @@
 export const HomePageBackground = () => {
   return (
-    <div className="fixed -top-20 right-60 rotate-30">
+    <div className="absolute -top-20 right-60 rotate-30">
       <div className="relative flex flex-col items-end gap-6">
         <div className="absolute top-64 right-0">
           <PowerKey />
         </div>
-        <div className="absolute top-104 -right-64">
+        <div className="absolute top-112 -right-64">
           <VerticalKey />
         </div>
         <div className="flex flex-row gap-6">
