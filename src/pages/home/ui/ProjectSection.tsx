@@ -24,7 +24,7 @@ const data: { projects: Project[] } = {
 export const ProjectSection = () => {
   return (
     <section className="relative flex h-screen flex-col justify-center gap-10">
-      <SectionTitle title="PROJECT" description="앱센터에 대한 간단한 설명이 있었으면 좋겠어요" />
+      <SectionTitle title="project" description="앱센터에 대한 간단한 설명이 있었으면 좋겠어요" />
       <Carousel data={data.projects} renderItem={(item) => <Item data={item} />} className="-mx-24 gap-16" />
     </section>
   );

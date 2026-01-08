@@ -13,8 +13,8 @@ export const SectionDetailTitle = ({ title, subtitle, className = '' }: { title:
 
 export const SectionTitle = ({ title, description, className = '' }: { title: string; description: string; className?: string }) => {
   return (
-    <div className={`flex flex-col gap-5 ${className}`}>
-      <h2 className="text-primary-gradient mb-8 text-[40px] font-normal">
+    <div id={title} className={`flex scroll-mt-[10vh] flex-col gap-5 ${className}`}>
+      <h2 className="text-primary-gradient mb-8 text-[40px] font-normal uppercase">
         <span className="text-brand-primary-cta">{title.charAt(0)}</span>
         {title.slice(1)}
       </h2>
