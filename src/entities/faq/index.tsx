@@ -1,2 +1,3 @@
-export { getFaqs } from './api/useFaq';
-export type { Faq } from './types/faq';
+export { faqApi } from './api';
+export type { Faq, FAQForm } from './types/faq';
+export { useFAQs, useFAQActions } from './hooks/useFAQActions';
