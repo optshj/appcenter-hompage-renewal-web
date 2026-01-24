@@ -31,7 +31,7 @@ const Item = ({ data }: { data: Project }) => {
           <div className="flex gap-4">
             {data.androidStoreLink && <span className="text-[36px] font-medium">Android</span>}
             {data.appleStoreLink && <span className="text-[36px] font-medium">iOS</span>}
-            {data.webSiteLink && <span className="text-[36px] font-medium">Web</span>}
+            {data.websiteLink && <span className="text-[36px] font-medium">Web</span>}
           </div>
           {data.isActive ? (
             <span className="border-brand-primary-cta rounded-[31px] border-2 px-4 pt-3 pb-2 text-xl font-semibold">서비스 이용 가능</span>
