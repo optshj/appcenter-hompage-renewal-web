@@ -6,7 +6,7 @@ export const AboutSection = () => {
     { title: '창립 연도', subNumber: 2008 },
     { title: '누적 멤버 수', subNumber: 205, smallSubtitle: '+' },
     { title: '출시한 서비스 수', subNumber: 15, smallSubtitle: '+' },
-    { title: '전공취업동아리 수상', subNumber: 3, smallSubtitle: '년 연속' }
+    { title: '취업동아리 수상', subNumber: 3, smallSubtitle: '년 연속' }
   ];
 
   return (

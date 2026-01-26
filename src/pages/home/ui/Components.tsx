@@ -74,9 +74,7 @@ export const Carousel = <T,>({ data, renderItem, className = '' }: CarouselProps
   const containerRef = useRef<HTMLUListElement>(null);
   const xTranslation = useMotionValue(0);
   const controlsRef = useRef<any>(null);
-
-  // 3배로 복제된 데이터
-  const duplicatedData = [...data, ...data, ...data];
+  const isDragging = useRef(false);
 
   // 애니메이션 실행 함수
   const startAnimation = (fromValue?: number) => {
@@ -126,7 +124,7 @@ export const Carousel = <T,>({ data, renderItem, className = '' }: CarouselProps
     animate(xTranslation, targetX, {
       type: 'spring',
       stiffness: 200,
-      damping: 25,
+      damping: 40,
       onComplete: () => {
         startAnimation(targetX);
       }
@@ -137,8 +135,41 @@ export const Carousel = <T,>({ data, renderItem, className = '' }: CarouselProps
 
   return (
     <div className={cn`${className} flex flex-col gap-7 overflow-hidden py-12`}>
-      <motion.ul ref={containerRef} style={{ x: xTranslation }} className={cn`flex gap-8 whitespace-nowrap ${className}`}>
-        {duplicatedData.map((item, index) => (
+      <motion.ul
+        ref={containerRef}
+        style={{ x: xTranslation }}
+        className={cn`flex gap-8 whitespace-nowrap ${className} cursor-grab select-none active:cursor-grabbing`}
+        drag="x"
+        onDragStart={() => {
+          isDragging.current = true;
+          controlsRef.current?.stop();
+        }}
+        onDragEnd={() => {
+          const contentWidth = containerRef.current?.scrollWidth || 0;
+          const singleSetWidth = contentWidth / 3;
+          let currentX = xTranslation.get();
+
+          if (currentX > 0) {
+            currentX -= singleSetWidth;
+            xTranslation.set(currentX);
+          } else if (currentX < -singleSetWidth) {
+            currentX += singleSetWidth;
+            xTranslation.set(currentX);
+          }
+          startAnimation(currentX);
+
+          setTimeout(() => {
+            isDragging.current = false;
+          }, 50);
+        }}
+        onClickCapture={(e) => {
+          if (isDragging.current) {
+            e.stopPropagation();
+            e.preventDefault();
+          }
+        }}
+      >
+        {[...data, ...data, ...data].map((item, index) => (
           <li key={index} className="shrink-0">
             {renderItem(item, index % data.length)}
           </li>

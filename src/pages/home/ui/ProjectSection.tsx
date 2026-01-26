@@ -24,8 +24,8 @@ const Item = ({ data }: { data: Project }) => {
       transition={{ duration: 0.4 }}
       className="group relative h-75 w-75 shrink-0 cursor-pointer snap-center overflow-hidden rounded-xl sm:h-140 sm:w-142"
     >
-      <Image loading="lazy" src={imageUrls[0]} alt={data.title} fill className="object-cover" quality={100} />
-      <Link href={`/project/${data.id}`} className="absolute inset-0 z-10">
+      <Image draggable={false} loading="lazy" src={imageUrls[0]} alt={data.title} fill className="object-cover" quality={100} />
+      <Link draggable={false} href={`/project/${data.id}`} className="absolute inset-0 z-10">
         <div className="bg-background-surface/80 absolute inset-0 flex flex-col items-start justify-start gap-2 p-10 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:gap-4">
           <h1 className="text-brand-primary-cta text-[32px] font-extrabold break-keep whitespace-normal sm:text-[64px]">{data.title}</h1>
           <div className="flex gap-2 sm:gap-4">

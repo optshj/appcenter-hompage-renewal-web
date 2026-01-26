@@ -41,8 +41,8 @@ export const WorkshopSection = () => {
 const Item = ({ data }: { data: WorkshopData }) => {
   return (
     <div className="group relative h-30 w-44 cursor-pointer overflow-hidden rounded-sm bg-gray-900 sm:h-120 sm:w-174 sm:rounded-xl">
-      <Image loading="lazy" src={myImage} alt={data.title} fill className="object-cover" />
-      <Link href={`/workshop/id=${data.title}`} className="absolute inset-0 z-10">
+      <Image draggable={false} loading="lazy" src={myImage} alt={data.title} fill className="object-cover" />
+      <Link draggable={false} href={`/workshop/id=${data.title}`} className="absolute inset-0 z-10">
         <div className="bg-background-surface/80 absolute inset-0 flex flex-col items-start justify-start gap-0.5 px-3 py-2 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:gap-2 sm:px-6.75 sm:py-3.25">
           <span className="text-primary-gradient text-[9px] sm:text-[36px]">{data.title}</span>
           <span className="text-custom-gray-500 text-[4.5px] sm:text-lg">{data.date}</span>
