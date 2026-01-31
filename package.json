@@ -10,12 +10,12 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.17",
-    "lenis": "^1.3.17",
     "lucide-react": "^0.562.0",
     "motion": "^12.24.7",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-error-boundary": "^6.1.0",
     "react-grid-layout": "^2.2.2",
     "react-kakao-maps-sdk": "^1.2.0",
     "tailwind-merge": "^3.4.0"
