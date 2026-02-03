@@ -13,35 +13,35 @@ export const FAQList = ({ data }: { data: Faq[] }) => {
 
   return (
     <div className="flex flex-col gap-4 sm:gap-7">
-      {/* 카테고리 탭 */}
       <div className="flex flex-row justify-between">
         {PART.map((category) => (
           <button
             key={category}
-            className={`cursor-pointer rounded-2xl text-sm font-bold transition-all duration-300 sm:text-2xl ${
-              selectedCategory === category ? 'text-brand-primary-cta' : 'text-primary-gradient hover:text-brand-primary-light'
+            className={`relative cursor-pointer rounded-2xl text-sm font-bold transition-all duration-300 sm:text-2xl ${
+              selectedCategory === category ? 'text-brand-primary-cta' : 'text-custom-gray-200 hover:text-brand-primary-light'
             }`}
             onClick={() => setSelectedCategory(category)}
           >
             {category}
+            {selectedCategory === category && (
+              <motion.div layoutId="underline" className="bg-brand-primary-cta absolute -bottom-1 left-0 w-full sm:h-px" transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
+            )}
           </button>
         ))}
       </div>
 
-      {/* FAQ 리스트 영역 */}
       <div className="flex flex-1 flex-col gap-2">
         <AnimatePresence mode="popLayout">
           <motion.div
             key={selectedCategory}
-            // 부모 컨테이너에서 자식들의 등장 간격을 제어 (Stagger)
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, margin: '-50px' }}
+            viewport={{ once: false, margin: '-50px' }}
             variants={{
               hidden: { opacity: 0 },
               show: {
                 opacity: 1,
-                transition: { staggerChildren: 0.08 } // 여기서 순차적 지연을 제어
+                transition: { staggerChildren: 0.08 }
               }
             }}
             className="flex flex-col gap-2"
@@ -67,16 +67,15 @@ const FAQItem = ({ data }: { data: Faq }) => {
 
   return (
     <motion.div
-      // 자식 요소는 부모의 'hidden'과 'show' 상태를 물려받음
       variants={{
         hidden: { opacity: 0, y: 20 },
         show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } }
       }}
-      layout // 아코디언 열릴 때 위치 자동 보정
+      layout
       className="group flex cursor-pointer flex-col text-white"
       onClick={() => setIsOpen(!isOpen)}
     >
-      <div className="text-text-primary group-hover:text-brand-primary-light bg-surface-elevated flex flex-row items-center justify-between gap-2 rounded-2xl px-3 py-2 sm:px-5 sm:py-4">
+      <div className="text-custom-gray-200 group-hover:text-brand-primary-light bg-surface-elevated flex flex-row items-center justify-between gap-2 rounded-2xl px-3 py-2 sm:px-5 sm:py-4">
         <h3 className="text-[12px] transition-colors sm:text-xl/7">
           <span className="text-[16px] font-bold sm:text-[28px]/7">Q.</span> {data.question}
         </h3>
