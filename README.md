@@ -13,33 +13,33 @@
 <table align="start">
   <tr>
     <td align="center">
-        <img src="https://written-copper-xxrlq9mjub.edgeone.app/Frame%2079.png" width="120px;" alt="optshj" style="border-radius:12px;"/><br />
+        <img src="public/images/readme.png" width="120px;" alt="양서린" style="border-radius:12px;"/><br />
         <b>양서린</b>
         <br/>
         <b>Design</b>
     </td>
     <td align="center">
-        <img src="https://written-copper-xxrlq9mjub.edgeone.app/Frame%2079.png" width="120px;" alt="optshj" style="border-radius:12px;"/><br />
+        <img src="public/images/readme.png" width="120px;" alt="임진희" style="border-radius:12px;"/><br />
         <b>임진희</b>
       <br />
       <b>Design</b>
     </td>
     <td align="center">
-        <img src="https://written-copper-xxrlq9mjub.edgeone.app/Frame%2079.png" width="120px;" alt="optshj" style="border-radius:12px;"/><br />
+        <img src="public/images/readme.png" width="120px;" alt="남궁민정" style="border-radius:12px;"/><br />
         <b>남궁민정</b>
       <br />
       <b>Design</b>
     </td>
     <td align="center">
       <a href="https://github.com/@82everywin">
-        <img src="https://github.com/82everywin.png" width="120px;" alt="optshj" style="border-radius:12px;"/><br/> 
+        <img src="https://github.com/82everywin.png" width="120px;" alt="한현승" style="border-radius:12px;"/><br/> 
         <b>한현승</b>
       </a><br />
       <b>Server</b>
     </td>
     <td align="center">
       <a href="https://github.com/optshj">
-        <img src="https://github.com/optshj.png" width="120px;" alt="optshj" style="border-radius:12px;"/><br />
+        <img src="https://github.com/optshj.png" width="120px;" alt="이성빈" style="border-radius:12px;"/><br />
         <b>이성빈</b>
       </a><br/>
       <b>Web</b>
