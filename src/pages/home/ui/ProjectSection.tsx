@@ -40,7 +40,7 @@ const ProjectCarousel = () => {
   return (
     <Carousel
       data={sortedProjects}
-      className="w-screen gap-3 sm:gap-11.5"
+      className="gap-3 sm:gap-11.5"
       overflowHidden={false}
       renderItem={(item) => {
         const imageUrls = Object.values(item.images);
