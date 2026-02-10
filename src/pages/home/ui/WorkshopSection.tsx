@@ -29,9 +29,10 @@ export const WorkshopSection = () => {
 
 const WorkshopCarousel = () => {
   const { data } = useWorkShop();
+  const sortedData = data.slice().sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
   return (
     <Carousel
-      data={data}
+      data={sortedData}
       className="gap-3 sm:gap-11.5"
       renderItem={(item) => (
         <div className="group relative h-16 w-30 overflow-hidden rounded-sm bg-gray-900 sm:h-66.75 sm:w-119.5 sm:rounded-xl">
