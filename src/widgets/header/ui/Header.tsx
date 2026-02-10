@@ -13,9 +13,6 @@ const NAV_ITEMS = [
   { name: 'Activity', href: '/#activity' },
   { name: 'FAQ', href: '/#faq' }
 ];
-
-// 헤더에서 이동 처리는 FullPageScroll의 scrollToId를 사용하여 처리합니다.
-// 단, 다른 페이지로 이동하는 경우에는 일반적인 링크 동작을 사용합니다.
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -49,7 +46,7 @@ export const Header = () => {
         initial={{ y: -120, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-        className="fixed z-50 flex h-30 w-full flex-row items-center justify-between bg-linear-to-b from-black/80 to-transparent px-9 sm:px-30"
+        className="fixed z-150 flex h-30 w-full flex-row items-center justify-between bg-linear-to-b from-black/80 to-transparent px-9 sm:px-30"
       >
         <a href="#main-content" className="bg-brand-primary-cta text-background fixed -top-2499.75 left-0 z-99999 w-40 px-6 py-4 text-center focus:top-0">
           본문 바로가기
@@ -78,7 +75,7 @@ export const Header = () => {
           </ul>
         </nav>
 
-        <div className="z-50 flex sm:hidden">
+        <div className="z-100 flex sm:hidden">
           <button onClick={toggleMenu} aria-label="메뉴 열기" className="text-white">
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -88,7 +85,8 @@ export const Header = () => {
       <AnimatePresence>
         {isOpen && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeMenu} className="bg-background/60 fixed inset-0 z-40 sm:hidden" />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeMenu} className="bg-background/60 fixed inset-0 z-100 sm:hidden" />
+
             <motion.nav
               initial="closed"
               animate="open"
@@ -103,9 +101,9 @@ export const Header = () => {
                   transition: { staggerChildren: 0.1, delayChildren: 0.1 }
                 }
               }}
-              className="fixed top-0 right-0 z-40 flex h-screen w-full flex-col items-end gap-4 pt-30 pr-9 sm:hidden"
+              className="pointer-events-none fixed top-0 right-0 z-100 flex h-screen w-full flex-col items-end gap-4 pt-30 pr-9 sm:hidden"
             >
-              <motion.div variants={{ closed: { opacity: 0, y: -20 }, open: { opacity: 1, y: 0 } }}>
+              <motion.div variants={{ closed: { opacity: 0, y: -20 }, open: { opacity: 1, y: 0 } }} className="pointer-events-auto">
                 <Link
                   href="/login"
                   onClick={closeMenu}
@@ -116,7 +114,7 @@ export const Header = () => {
               </motion.div>
 
               {NAV_ITEMS.map((item) => (
-                <motion.div key={item.name} variants={{ closed: { opacity: 0, y: -20 }, open: { opacity: 1, y: 0 } }}>
+                <motion.div key={item.name} variants={{ closed: { opacity: 0, y: -20 }, open: { opacity: 1, y: 0 } }} className="pointer-events-auto">
                   <Link
                     href={item.href}
                     onClick={(e) => {

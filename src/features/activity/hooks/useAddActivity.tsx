@@ -39,6 +39,7 @@ export const useAddActivity = () => {
         title: data.title,
         author: data.author,
         body: data.body,
+        titleEng: data.titleEng,
         contents: processedContents
       };
 
