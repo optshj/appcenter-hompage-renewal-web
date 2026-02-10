@@ -1,6 +1,7 @@
 import { ReactQueryProvider } from '../provider/ReactQueryProvider';
 import { productDesignFont, pretendardFont } from '../style/fonts';
 import '../style/globals.css';
+import { Analytics } from '@vercel/analytics/next';
 
 export function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const jsonLd = {
@@ -18,6 +19,7 @@ export function RootLayout({ children }: Readonly<{ children: React.ReactNode }>
   return (
     <html lang="ko" className={`${productDesignFont.variable} ${pretendardFont.variable} no-scrollbar`}>
       <body className="antialiased">
+        <Analytics />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
