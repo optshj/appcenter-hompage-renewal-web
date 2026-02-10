@@ -23,7 +23,7 @@ export function OtherRecruitments() {
   };
 
   return (
-    <section className="group/section relative mt-32 flex flex-col gap-3 [--gap:12px] sm:gap-12 sm:[--gap:32px]">
+    <section className="group/section relative my-32 flex flex-col gap-3 [--gap:12px] sm:gap-12 sm:[--gap:32px]">
       <div className="flex flex-row items-start justify-between gap-6">
         <h2 className="text-brand-primary-cta text-[16px] leading-none font-bold sm:text-[64px]">Other Recruits</h2>
 
