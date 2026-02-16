@@ -13,6 +13,18 @@ export const useRecruitmentById = (recruitmentId: number) => {
     ...recruitmentOptions.getById(recruitmentId)
   });
 };
+export const useRecruitmentByMember = () => {
+  return useSuspenseQuery({
+    ...recruitmentOptions.getByMember()
+  });
+};
+
+export const useRecruitmentEmail = () => {
+  return useSuspenseQuery({
+    queryKey: recruitmentKeys.email(),
+    queryFn: recruitmentApi.getAllEmail
+  });
+};
 
 export const useRecruitmentActions = () => {
   const queryClient = useQueryClient();
@@ -41,10 +53,20 @@ export const useRecruitmentActions = () => {
     onSuccess: invalidateRecruitments
   });
 
-  const toggleMutation = useMutation({
-    mutationFn: recruitmentApi.toggleActive,
+  const changeActiveMutation = useMutation({
+    mutationFn: recruitmentApi.changeActive,
     onSuccess: invalidateRecruitments
   });
 
-  return { addMutation, editThumbnailMutation, editMetadataMutation, deleteMutation, toggleMutation };
+  const invalidateEmail = () => {
+    return queryClient.invalidateQueries({ queryKey: recruitmentKeys.email() });
+  };
+
+  // 이메일 관련 API
+  const postEmailMutation = useMutation({
+    mutationFn: recruitmentApi.postEmail,
+    onSuccess: invalidateEmail
+  });
+
+  return { addMutation, editThumbnailMutation, editMetadataMutation, deleteMutation, changeActiveMutation, postEmailMutation };
 };
