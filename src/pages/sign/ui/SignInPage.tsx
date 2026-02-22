@@ -1,5 +1,7 @@
 'use client';
+import { useSignActions } from 'entities/sign';
 import { ArrowRight, Loader2, User, Lock, EyeOff, Eye } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 import { Logo } from 'shared/icon/Logo';
 
@@ -7,22 +9,11 @@ export function SignInPage() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { memberLoginMutation } = useSignActions();
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log('Logged in with ID:', id, 'and Password:', password);
-    } catch {
-      setError('로그인에 실패했습니다. 다시 시도해주세요.');
-    } finally {
-      setIsLoading(false);
-    }
+    memberLoginMutation.mutate({ id, password });
   };
 
   return (
@@ -70,14 +61,18 @@ export function SignInPage() {
             </div>
           </div>
 
-          {error && <div className="animate-in fade-in slide-in-from-top-1 rounded-lg border border-red-900/50 bg-red-900/20 py-2.5 text-center text-sm font-semibold text-red-400">{error}</div>}
+          {memberLoginMutation.error && (
+            <div className="animate-in fade-in slide-in-from-top-1 rounded-lg border border-red-900/50 bg-red-900/20 py-2.5 text-center text-sm font-semibold text-red-400">
+              아이디 또는 비밀번호가 일치하지 않습니다.
+            </div>
+          )}
 
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={memberLoginMutation.isPending}
             className="group bg-brand-primary-cta hover:bg-brand-primary-cta/80 relative flex w-full items-center justify-center gap-2 rounded-xl py-4 font-bold text-black transition-all active:scale-[0.98] disabled:opacity-50"
           >
-            {isLoading ? (
+            {memberLoginMutation.isPending ? (
               <Loader2 className="h-6 w-6 animate-spin text-black" />
             ) : (
               <>
@@ -86,6 +81,13 @@ export function SignInPage() {
               </>
             )}
           </button>
+          <div className="mt-8 flex items-center justify-center gap-2 text-sm">
+            <span className="text-zinc-400">아직 계정이 없으신가요?</span>
+            <Link href="/sign-up" className="group text-brand-primary-cta hover:text-brand-primary-cta/70 relative font-bold transition-colors">
+              회원가입
+              <span className="bg-brand-primary-cta absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 transition-all duration-300 ease-in-out group-hover:w-full" />
+            </Link>
+          </div>
         </form>
       </div>
     </div>
