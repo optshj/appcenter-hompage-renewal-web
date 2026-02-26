@@ -1,11 +1,13 @@
 'use client';
 import { useState } from 'react';
-import { Trash2, Loader2, Pencil, Plus, Save, AlertCircle } from 'lucide-react';
+import { Trash2, Loader2, Pencil, Plus } from 'lucide-react';
 import { useGenerationActions, useGroupYear, usePart, Generation, GenerationForm } from 'entities/generation';
 import { useRoles } from 'entities/role';
 
 import { Modal } from 'shared/ui/modal';
 import { SearchMember } from './SearchMember';
+import { Alert } from 'shared/ui/alert';
+import { SaveButton } from 'shared/ui/button';
 
 export const AddGenerationForm = () => {
   return (
@@ -97,7 +99,7 @@ const GenerationFormContent = ({ initialData, onClose }: FormContentProps) => {
 
   const handleSubmit = async () => {
     const finalYear = customYear !== '' ? Number(customYear) : formData.year;
-    const finalPart = customPart !== undefined ? customPart : formData.part;
+    const finalPart = customPart !== '' ? customPart : formData.part;
 
     await mutation.mutateAsync({
       ...formData,
@@ -135,12 +137,11 @@ const GenerationFormContent = ({ initialData, onClose }: FormContentProps) => {
       )}
 
       <div className="space-y-4 border-t border-slate-100 pt-4">
-        <div className="flex items-center gap-2 rounded-lg bg-emerald-50 p-3 text-xs font-medium text-emerald-600">
-          <AlertCircle size={16} className="shrink-0" />
+        <Alert type="info">
           <span>
             새 기수 또는 파트가 필요하면 <b>직접 입력</b> 해주세요
           </span>
-        </div>
+        </Alert>
         <div className="space-y-3">
           <label className="flex items-center gap-2 px-1 text-xs font-bold text-slate-400">기수 선택 또는 직접 입력</label>
 
@@ -212,17 +213,9 @@ const GenerationFormContent = ({ initialData, onClose }: FormContentProps) => {
           </div>
         </div>
       </div>
-
-      <div className="">
-        <button
-          disabled={isPending || !isValid}
-          onClick={handleSubmit}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 py-4 font-bold text-white shadow-xl shadow-indigo-100 transition-all hover:bg-indigo-700 active:scale-[0.98] disabled:bg-slate-200 disabled:shadow-none"
-        >
-          {isPending ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
-          {isPending ? '처리 중...' : isEdit ? '변경사항 수정' : '저장'}
-        </button>
-      </div>
+      <SaveButton disabled={isPending || !isValid} onClick={handleSubmit} isPending={isPending}>
+        {isEdit ? '변경사항 수정' : '저장'}
+      </SaveButton>
     </div>
   );
 };

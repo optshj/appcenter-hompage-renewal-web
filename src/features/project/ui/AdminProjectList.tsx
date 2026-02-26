@@ -4,12 +4,35 @@ import { Calendar } from 'lucide-react';
 import { EmptyResult } from 'shared/error/EmptyResult';
 import { Table, TableBody, TableHeader, TableHeaderCell } from 'shared/ui/table';
 import { SearchBar } from 'shared/ui/searchbar';
-import { Project, useProject } from 'entities/project';
+import { Project, useProject, useProjectByMember } from 'entities/project';
 import { AddProjectForm, EditProjectForm, DeleteProjectButton, ProjectStatusToggle } from './ProjectListButton';
 import { AppStore, GooglePlay, WebLink } from 'entities/link';
+import { UserMode, useRoleContext } from 'entities/sign';
 
 export const AdminProjectList = () => {
+  const { mode } = useRoleContext();
+
+  switch (mode) {
+    case 'admin':
+      return <AdminProjectFetcher mode={mode} />;
+    case 'member':
+      return <MemberProjectFetcher mode={mode} />;
+    default:
+      return <div>알 수 없는 권한입니다.</div>;
+  }
+};
+
+const AdminProjectFetcher = ({ mode }: { mode: UserMode }) => {
   const { data } = useProject();
+  return <ProjectListUI data={data} mode={mode} />;
+};
+
+const MemberProjectFetcher = ({ mode }: { mode: UserMode }) => {
+  const { data } = useProjectByMember();
+  return <ProjectListUI data={data} mode={mode} />;
+};
+
+const ProjectListUI = ({ data, mode }: { data: Project[]; mode: UserMode }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredData = data.filter((project) => project.title.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -18,7 +41,7 @@ export const AdminProjectList = () => {
     <>
       <div className="mb-6 flex items-center justify-between gap-4">
         <SearchBar placeholder="프로젝트 이름으로 검색하세요..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-        <AddProjectForm />
+        <AddProjectForm mode={mode} />
       </div>
 
       <Table>
@@ -33,7 +56,7 @@ export const AdminProjectList = () => {
         </TableHeader>
         <TableBody>
           {filteredData.map((project) => (
-            <Item key={project.id} data={project} />
+            <Item key={project.id} data={project} mode={mode} />
           ))}
           {filteredData.length === 0 && <EmptyResult />}
         </TableBody>
@@ -41,8 +64,7 @@ export const AdminProjectList = () => {
     </>
   );
 };
-
-const Item = ({ data }: { data: Project }) => {
+const Item = ({ data, mode }: { data: Project; mode: UserMode }) => {
   const thumbnail = data.images && Object.values(data.images).length > 0 ? (Object.values(data.images)[0] as string) : null;
 
   return (
@@ -104,7 +126,7 @@ const Item = ({ data }: { data: Project }) => {
       </td>
       <td className="px-6 py-5 text-right">
         <div className="flex items-center justify-end gap-3 opacity-0 transition-opacity group-hover:opacity-100">
-          <EditProjectForm project={data} />
+          <EditProjectForm project={data} mode={mode} />
           <DeleteProjectButton projectId={data.id} />
         </div>
       </td>
