@@ -1,20 +1,23 @@
 'use client';
 import { useState } from 'react';
-import { AlertCircle, ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Project, projectApi } from 'entities/project';
 
 import { ProjectFormType, StepType } from '../types/form';
 
 import { useProjectSubmit } from '../hooks/useProjectSubmit';
+import { useRoleContext } from 'entities/sign';
 
 import { MainSectionForm } from './MainSectionForm';
 import { IntroduceSectionForm } from './IntroduceSectionForm';
 import { GridSectionForm } from './GridSectionForm';
 import { StepIndicator } from './StepIndicator';
+import { Alert } from 'shared/ui/alert';
 
 export const ProjectForm = ({ initialData }: { initialData?: Project }) => {
   const router = useRouter();
+  const { mode } = useRoleContext();
   const [projectId, setProjectId] = useState<number | null>(initialData?.id || null);
   const [step, setStep] = useState<StepType>('main');
   const [form, setForm] = useState<ProjectFormType>({
@@ -43,7 +46,7 @@ export const ProjectForm = ({ initialData }: { initialData?: Project }) => {
           projectId: projectId,
           onSuccess: () => {
             if (step === 'grid') {
-              router.push('/admin/project');
+              router.push(`/${mode}/project`);
               router.refresh();
             } else if (step === 'introduce') {
               setStep('grid');
@@ -126,12 +129,11 @@ export const ProjectForm = ({ initialData }: { initialData?: Project }) => {
         {renderStepContent()}
 
         <div className="fixed right-24 bottom-10 z-50 flex items-center gap-4">
-          <div className="flex items-center gap-2 rounded-lg bg-amber-50 p-3 text-xs font-medium text-amber-600">
-            <AlertCircle size={16} className="shrink-0" />
+          <Alert type="warning">
             <span>
               이미지 크기는 <strong>최대 5MB</strong>까지 허용됩니다. <br />
             </span>
-          </div>
+          </Alert>
           {step !== 'main' && (
             <button
               type="button"

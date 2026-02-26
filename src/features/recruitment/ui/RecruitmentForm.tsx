@@ -1,18 +1,22 @@
 'use client';
 import { useState } from 'react';
-import { Save, CheckCircle2, Image as ImageIcon, Plus, Settings, RefreshCw } from 'lucide-react';
+import { CheckCircle2, Image as ImageIcon, Plus, Settings, RefreshCw } from 'lucide-react';
 import { useAddRecruitment } from '../hooks/useAddRecruitment';
 import { useEditRecruitment } from '../hooks/useEditRecruitment';
 import { useRecruitmentField } from 'entities/recruitment-field';
 import type { RecruitmentForm as RecruitmentFormType } from '../types/form';
 import { Recruitment } from 'entities/recruitment';
 import Link from 'next/link';
+import { useRoleContext } from 'entities/sign';
+import { Alert } from 'shared/ui/alert';
+import { SaveButton } from 'shared/ui/button';
 
 export function RecruitmentForm({ initialData }: { initialData?: Recruitment }) {
   const isEditMode = Boolean(initialData);
   const { addRecruitment, isPending: isAddPending } = useAddRecruitment();
   const { editRecruitment, isPending: isEditPending } = useEditRecruitment();
   const { data: recruitmentField, refetch, isFetching } = useRecruitmentField();
+  const { mode } = useRoleContext();
 
   const isPending = isEditMode ? isEditPending : isAddPending;
 
@@ -53,7 +57,7 @@ export function RecruitmentForm({ initialData }: { initialData?: Recruitment }) 
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-      <h1 className="mb-8 text-2xl font-bold text-slate-900">{isEditMode ? '모집 공고 수정' : '신입 부원 모집 등록'}</h1>
+      <h1 className="mb-8 text-2xl font-bold text-slate-900">{isEditMode ? '모집 공고 수정' : '모집 공고 등록'}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         <section className="space-y-4">
@@ -64,7 +68,7 @@ export function RecruitmentForm({ initialData }: { initialData?: Recruitment }) 
 
           <div className="flex flex-row gap-6">
             <div className="flex flex-1 flex-col gap-4">
-              <Input label="공고 제목" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="예: 앱센터 18기 모집" />
+              <Input label="공고 제목" required={true} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="예: 앱센터 18기 모집" />
               <div className="h-full space-y-1">
                 <label className="text-sm font-medium text-slate-700">모집 설명</label>
                 <textarea
@@ -110,14 +114,21 @@ export function RecruitmentForm({ initialData }: { initialData?: Recruitment }) 
             모집 상세 조건
           </h2>
 
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="flex gap-4">
-              <Input label="모집 시작일" type="date" value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} />
-              <Input label="모집 종료일" type="date" value={form.endDate} onChange={(e) => setForm({ ...form, endDate: e.target.value })} />
+          <div className="grid grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <div className="flex gap-4">
+                <Input label="모집 시작일" required={true} type="date" value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} />
+                <Input label="모집 종료일" required={true} type="date" value={form.endDate} onChange={(e) => setForm({ ...form, endDate: e.target.value })} />
+                <Input label="모집 인원" type="number" value={form.capacity} onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })} placeholder="숫자만 입력" />
+              </div>
+              <Input label="모집 대상" value={form.targetAudience} onChange={(e) => setForm({ ...form, targetAudience: e.target.value })} placeholder="예: 열정있는 유니들" />
             </div>
-            <Input label="모집 인원" type="number" value={form.capacity} onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })} placeholder="숫자만 입력" />
-            <Input label="모집 대상" value={form.targetAudience} onChange={(e) => setForm({ ...form, targetAudience: e.target.value })} placeholder="예: 인천대학교 재학생" />
-            <Input label="지원 링크(Google Form 등)" value={form.applyLink} onChange={(e) => setForm({ ...form, applyLink: e.target.value })} placeholder="https://..." />
+            <div className="space-y-2">
+              <Alert type="warning">
+                <span className="whitespace-pre-line">{'링크 끝에 붙은 ? 기호와 그 뒤의 내용(예: ?usp=sharing)은 모두 지우고 입력해 주세요. \n설문지 링크가 제대로 작동하지 않을 수 있습니다.'}</span>
+              </Alert>
+              <Input label="지원 링크(Google Form 등)" value={form.applyLink} onChange={(e) => setForm({ ...form, applyLink: e.target.value })} placeholder="https://docs.google.com/forms" />
+            </div>
           </div>
         </section>
 
@@ -131,7 +142,7 @@ export function RecruitmentForm({ initialData }: { initialData?: Recruitment }) 
           </h2>
           <div className="flex items-center gap-3">
             <Link
-              href="/admin/recruitment-field"
+              href={`/${mode}/recruitment-field`}
               target="_blank"
               onClick={(e) => {
                 const ok = confirm('새 탭에 모집 분야 관리 페이지로 이동합니다.');
@@ -177,24 +188,27 @@ export function RecruitmentForm({ initialData }: { initialData?: Recruitment }) 
         </section>
 
         <div className="flex justify-end pt-6">
-          <button
-            disabled={isPending}
-            type="submit"
-            className="flex items-center gap-2 rounded-xl bg-blue-600 px-12 py-4 text-base font-bold text-white shadow-lg transition-all hover:bg-blue-700 hover:shadow-blue-200 disabled:bg-slate-400 disabled:shadow-none"
-          >
-            <Save size={20} /> {isEditMode ? '수정 사항 저장' : '모집 공고 등록'}
-          </button>
+          <SaveButton disabled={isPending || !form.title || !form.startDate || !form.endDate} isPending={isPending} className="w-60" onClick={handleSubmit}>
+            {isEditMode ? '수정 사항 저장' : '모집 공고 등록'}
+          </SaveButton>
         </div>
       </form>
     </div>
   );
 }
 
-const Input = ({ label, className, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) => {
+const Input = ({ label, required, className, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) => {
   return (
     <div className="space-y-1">
-      <label className="text-sm font-medium text-slate-700">{label}</label>
-      <input {...props} className={`w-full rounded-lg border border-slate-200 px-3 py-2 text-sm transition-all outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 ${className}`} />
+      <label className="flex items-center gap-1 text-sm font-medium text-slate-700">
+        {label}
+        {required && <span className="text-red-500">*</span>}
+      </label>
+      <input
+        required={required}
+        {...props}
+        className={`w-full rounded-lg border border-slate-200 px-3 py-2 text-sm transition-all outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 ${className}`}
+      />
     </div>
   );
 };

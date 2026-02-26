@@ -1,9 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { Pencil, Plus, Trash2, Loader2, X, Upload, AlertCircle } from 'lucide-react';
+import { Pencil, Plus, Trash2, Loader2, X, Upload } from 'lucide-react';
 import { Modal } from 'shared/ui/modal';
 import { useSkillStackActions, type SkillStack } from 'entities/skill-stack';
 import { SKILL_CATEGORY, SKILL_CATEGORY_COLORS } from 'shared/constants/skillCategory';
+import { Alert } from 'shared/ui/alert';
+import { SaveButton } from 'shared/ui/button';
 
 export const AddSkillForm = () => {
   const { addMutation } = useSkillStackActions();
@@ -132,12 +134,11 @@ export const SkillForm = ({ initialData, onSubmit, isPending }: SkillFormProps) 
 
       <div className="flex flex-col gap-2">
         <span className="text-sm font-semibold text-slate-400">아이콘 이미지</span>
-        <div className="flex items-center gap-2 rounded-lg bg-amber-50 p-3 text-xs font-medium text-amber-600">
-          <AlertCircle size={16} className="shrink-0" />
+        <Alert type="warning">
           <span>
             배경이 투명한 <b>.png</b> 파일만 업로드해주세요.
           </span>
-        </div>
+        </Alert>
 
         <div className="relative h-32 w-fit">
           <label
@@ -168,14 +169,9 @@ export const SkillForm = ({ initialData, onSubmit, isPending }: SkillFormProps) 
           )}
         </div>
       </div>
-
-      <button
-        type="submit"
-        disabled={isPending || !name}
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-4 font-bold text-white transition-all hover:bg-blue-600 disabled:bg-slate-300"
-      >
-        {isPending ? <Loader2 className="animate-spin" /> : '저장하기'}
-      </button>
+      <SaveButton type="submit" disabled={isPending || !name || !category || !preview}>
+        저장하기
+      </SaveButton>
     </form>
   );
 };

@@ -1,19 +1,53 @@
 'use client';
 import { ImageIcon } from 'lucide-react';
+import Link from 'next/link';
 import { AddRecruitmentButton, DeleteRecruitmentButton, EditRecruitmentButton, RecruitmentStatusGrid } from './RecruitmentListButton';
-import { useRecruitment } from 'entities/recruitment';
+import { useRecruitment, useRecruitmentByMember } from 'entities/recruitment';
 import { EmptyResult } from 'shared/error/EmptyResult';
 import { Table, TableBody, TableHeader, TableHeaderCell } from 'shared/ui/table';
-import Link from 'next/link';
 import { STATUS_CONFIG } from '../config/statusConfig';
+import { UserMode, useRoleContext } from 'entities/sign';
+import { Alert } from 'shared/ui/alert';
 
 export const AdminRecruitmentList = () => {
-  const { data } = useRecruitment();
+  const { mode } = useRoleContext();
 
+  switch (mode) {
+    case 'admin':
+      return <AdminRecruitmentFetcher mode={mode} />;
+    case 'member':
+      return <MemberRecruitmentFetcher mode={mode} />;
+    default:
+      return <div>알 수 없는 권한입니다.</div>;
+  }
+};
+
+const AdminRecruitmentFetcher = ({ mode }: { mode: UserMode }) => {
+  const { data } = useRecruitment();
+  return <RecruitmentListUI data={data} mode={mode} />;
+};
+
+const MemberRecruitmentFetcher = ({ mode }: { mode: UserMode }) => {
+  const { data } = useRecruitmentByMember();
+  return <RecruitmentListUI data={data} mode={mode} />;
+};
+
+const RecruitmentListUI = ({ data, mode }: { data: ReturnType<typeof useRecruitment>['data']; mode: UserMode }) => {
   return (
     <div className="flex flex-col items-center gap-6">
-      <div className="flex w-full flex-row justify-end">
-        <AddRecruitmentButton />
+      <div className="flex w-full flex-row justify-between">
+        <Alert type="info">
+          <div className="flex flex-col gap-1">
+            <p className="text-sm leading-relaxed text-blue-800">
+              모집 상태를 <strong className="font-semibold">자동</strong>으로 설정해 두면, 설정하신 <strong className="font-semibold">모집 시작일과 종료일</strong>에 맞춰 시스템이 알아서
+              <span className="mx-1 inline-flex items-center rounded-md bg-white px-1.5 py-0.5 text-[11px] font-bold text-amber-600 shadow-sm">대기중</span>
+              <span className="mx-1 inline-flex items-center rounded-md bg-white px-1.5 py-0.5 text-[11px] font-bold text-emerald-600 shadow-sm">모집중</span>
+              <span className="mx-1 inline-flex items-center rounded-md bg-white px-1.5 py-0.5 text-[11px] font-bold text-rose-600 shadow-sm">마감</span>
+              으로 상태를 변경합니다.
+            </p>
+          </div>
+        </Alert>
+        <AddRecruitmentButton mode={mode} />
       </div>
       <Table>
         <TableHeader>
@@ -27,7 +61,7 @@ export const AdminRecruitmentList = () => {
         </TableHeader>
         <TableBody>
           {data.map((item) => (
-            <Item key={item.id} data={item} />
+            <Item key={item.id} data={item} mode={mode} />
           ))}
           {data.length === 0 && <EmptyResult />}
         </TableBody>
@@ -35,7 +69,8 @@ export const AdminRecruitmentList = () => {
     </div>
   );
 };
-const Item = ({ data }: { data: ReturnType<typeof useRecruitment>['data'][number] }) => {
+
+const Item = ({ data, mode }: { data: ReturnType<typeof useRecruitment>['data'][number]; mode: string }) => {
   return (
     <tr className="group transition-colors hover:bg-slate-50/50">
       <td className="px-6 py-5 text-sm text-slate-400">#{data.id}</td>
@@ -96,7 +131,7 @@ const Item = ({ data }: { data: ReturnType<typeof useRecruitment>['data'][number
 
       <td className="px-6 py-5 text-right">
         <div className="flex justify-end gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-          <EditRecruitmentButton id={data.id} />
+          <EditRecruitmentButton id={data.id} mode={mode} />
           <DeleteRecruitmentButton recruitmentId={data.id} />
         </div>
       </td>
