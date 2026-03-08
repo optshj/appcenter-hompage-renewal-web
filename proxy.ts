@@ -10,6 +10,7 @@ export async function proxy(request: NextRequest) {
   const isAdminRoute = pathname.startsWith('/admin') && pathname !== '/admin';
   const isMemberRoute = pathname.startsWith('/member') && pathname !== '/member';
 
+  
   if (!isAdminRoute && !isMemberRoute) {
     return NextResponse.next();
   }
