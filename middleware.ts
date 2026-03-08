@@ -1,16 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export const runtime = 'edge';
-
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 보호할 경로인지 확인
   const isAdminRoute = pathname.startsWith('/admin') && pathname !== '/admin';
   const isMemberRoute = pathname.startsWith('/member') && pathname !== '/member';
 
-  
   if (!isAdminRoute && !isMemberRoute) {
     return NextResponse.next();
   }
