@@ -27,6 +27,7 @@ const DEFAULT_FORM: SignUpForm = {
 };
 
 export function SignUpPage() {
+  // account -> basic -> profile 순으로 이동
   const [currentStep, setCurrentStep] = useState<StepType>('account');
   const [formData, setFormData] = useState<SignUpForm>(DEFAULT_FORM);
   const [showPassword, setShowPassword] = useState(false);

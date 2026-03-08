@@ -47,7 +47,7 @@ export function Sidebar() {
       </button>
 
       <div className={`mb-6 flex items-center px-2 ${isCollapsed ? 'justify-center' : ''}`}>
-        <Link href="/member/home">
+        <Link href={`/${mode}/home`}>
           <Logo className="h-6 w-6" />
         </Link>
       </div>
