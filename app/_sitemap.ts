@@ -1,10 +1,10 @@
 import { MetadataRoute } from 'next';
-import { projectApi } from 'entities/project/api';
-import { activityApi } from 'entities/activity/api';
-import { recruitmentApi } from 'entities/recruitment/api';
+import { projectApi } from 'entities/project';
+import { activityApi } from 'entities/activity';
+import { recruitmentApi } from 'entities/recruitment';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://inuappcenter.kr';
+  const baseUrl = 'https://home.inuappcenter.kr';
 
   const staticRoutes = ['', '/joinus', '/ourteam', '/project', '/activity'].map((route) => ({
     url: `${baseUrl}${route}`,
