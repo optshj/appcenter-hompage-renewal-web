@@ -6,6 +6,7 @@ import { Logo } from 'shared/icon/Logo';
 import { StepIndicator, StepType } from './StepIndicator';
 import { SignUpRequest, useSignActions } from 'entities/sign';
 import { SignUpSuccessView } from './SignupSuccess';
+import { formatPhoneNumber } from 'shared/utils/phoneNumber';
 
 export type SignUpForm = SignUpRequest & { confirmPassword: string };
 
@@ -36,7 +37,12 @@ export function SignUpPage() {
   const { signupMutation } = useSignActions();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name } = e.target;
+    let { value } = e.target;
+
+    if (name === 'phoneNumber') {
+      value = formatPhoneNumber(value);
+    }
     const isOptionalField = ['description', 'profileImage', 'blogLink', 'gitRepositoryLink', 'behanceLink', 'department'].includes(name);
     setFormData((prev) => ({ ...prev, [name]: isOptionalField && value === '' ? null : value }));
   };
@@ -178,11 +184,10 @@ export function SignUpPage() {
 
           {error && <div className="rounded-lg border border-red-900/50 bg-red-900/20 py-2.5 text-center text-sm font-semibold text-red-400">{error}</div>}
 
-          {/* 💡 하단 버튼 영역 통합 변경 */}
           <div className="flex gap-3 pt-4">
             {currentStep !== 'account' && (
               <button
-                type="button" // 이전 버튼은 form을 제출하면 안 되므로 type="button" 유지!
+                type="button"
                 onClick={handlePrev}
                 className="flex w-1/3 items-center justify-center rounded-xl border border-gray-700 bg-gray-800 py-3.5 text-sm font-bold text-white transition-all hover:bg-gray-700 active:scale-[0.98]"
               >
@@ -190,7 +195,6 @@ export function SignUpPage() {
               </button>
             )}
 
-            {/* 💡 다음 단계 / 제출 버튼을 하나로 합치고 무조건 type="submit"을 부여합니다 */}
             <button
               type="submit"
               disabled={signupMutation.isPending}
