@@ -3,6 +3,8 @@ import { projectApi } from 'entities/project';
 import { activityApi } from 'entities/activity';
 import { recruitmentApi } from 'entities/recruitment';
 
+export const dynamic = 'force-dynamic';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://home.inuappcenter.kr';
 
@@ -46,10 +48,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/joinus/${recruitment.id}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
-      priority: 0.7
+      priority: 1.0
     }));
-  } catch (error) {
-    console.error('Failed to fetch recruitments for sitemap:', error);
+  } catch {
+    console.error('Failed to fetch recruitments for sitemap');
   }
 
   return [...staticRoutes, ...projectRoutes, ...activityRoutes, ...recruitmentRoutes];
