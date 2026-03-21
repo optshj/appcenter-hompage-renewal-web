@@ -8,6 +8,7 @@ export const ScrambleText = ({ text, delay = 0 }: { text: string; delay?: number
 
   const startScramble = useCallback(() => {
     let frame = 0;
+
     const step = 3;
     const revealOffset = 10;
 
