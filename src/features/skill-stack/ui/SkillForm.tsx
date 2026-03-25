@@ -103,7 +103,7 @@ export const SkillForm = ({ initialData, onSubmit, isPending }: SkillFormProps) 
     const selectedFile = e.target.files?.[0];
 
     if (selectedFile) {
-      const maxSizeInBytes = 2 * 1024 * 1024;
+      const maxSizeInBytes = 100 * 1024 * 1024;
 
       if (selectedFile.size > maxSizeInBytes) {
         toast.error('이미지 크기는 2MB 이하여야 합니다');
