@@ -1,7 +1,7 @@
 const getBaseUrl = () => {
   // BFF 서버 주소
   if (typeof window !== 'undefined') {
-    return `${process.env.NEXT_PUBLIC_API_URL}/api`;
+    return `/api`;
   }
 
   return process.env.API_URL;
