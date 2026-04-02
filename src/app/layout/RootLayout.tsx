@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import { Toaster } from 'shared/ui/toast';
 import { ReactQueryProvider } from '../provider/ReactQueryProvider';
 import { productDesignFont, pretendardFont, tokyoFont } from '../style/fonts';
@@ -29,6 +30,7 @@ export function RootLayout({ children }: Readonly<{ children: React.ReactNode }>
   return (
     <html lang="ko" className={`${productDesignFont.variable} ${pretendardFont.variable} ${tokyoFont.variable} no-scrollbar`}>
       <body className="antialiased">
+        <Script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d72988e5b9f34b398e6901943d0f0e6d"}' />
         <Toaster />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <ReactQueryProvider>{children}</ReactQueryProvider>
