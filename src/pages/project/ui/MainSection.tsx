@@ -49,10 +49,10 @@ export const MainSection = ({ data }: { data: Project }) => {
           <Image
             src={imageUrls[1] ? imageUrls[1] : '/images/dummyMockup.png'}
             alt="Main Section Image"
-            width={2000}
+            width={1200}
             height={600}
             className="h-auto w-auto max-w-full rounded-xl object-contain"
-            quality={100}
+            quality={75}
           />
         </div>
       </div>

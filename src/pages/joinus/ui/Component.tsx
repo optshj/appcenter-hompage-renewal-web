@@ -19,7 +19,7 @@ export function RecruitmentCard({ data, isActive }: { data: RecruitmentList; isA
           alt={`${data.title} thumbnail`}
           width={1920}
           height={1020}
-          quality={100}
+          quality={75}
           className="aspect-square w-full rounded-md object-cover object-top sm:aspect-square sm:rounded-xl"
         />
       ) : (
