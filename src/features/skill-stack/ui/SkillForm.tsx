@@ -27,7 +27,6 @@ export const AddSkillForm = () => {
           onSubmit={async (data) => {
             await addMutation.mutateAsync(data);
             close();
-            toast.success('기술 스택이 추가되었습니다');
           }}
         />
       )}
@@ -54,7 +53,6 @@ export const EditSkillForm = ({ data }: { data: SkillStack }) => {
           onSubmit={async (formData) => {
             await editMutation.mutateAsync({ id: data.id, data: formData });
             close();
-            toast.success('기술 스택이 수정되었습니다');
           }}
         />
       )}
@@ -68,7 +66,6 @@ export const DeleteSkillButton = ({ skillId }: { skillId: number }) => {
   const handleDelete = () => {
     if (confirm('정말 삭제하시겠습니까?')) {
       deleteMutation.mutate(skillId);
-      toast.success('기술 스택이 삭제되었습니다');
     }
   };
 
@@ -118,7 +115,9 @@ export const SkillForm = ({ initialData, onSubmit, isPending }: SkillFormProps) 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-semibold text-slate-400">기술 스택명</label>
+        <label className="text-sm font-semibold text-slate-400">
+          기술 스택명 <span className="text-red-500">*</span>
+        </label>
         <input
           autoFocus
           required
@@ -129,14 +128,16 @@ export const SkillForm = ({ initialData, onSubmit, isPending }: SkillFormProps) 
         />
       </div>
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-semibold text-slate-400">카테고리</label>
+        <label className="text-sm font-semibold text-slate-400">
+          카테고리 <span className="text-red-500">*</span>
+        </label>
         <div className="flex flex-wrap gap-2">
           {SKILL_CATEGORY.map((c) => (
             <button
               key={c}
               type="button"
               onClick={() => setCategory(c)}
-              className={`rounded-xl px-5 py-2.5 text-xs font-bold transition-all hover:bg-slate-100 ${category === c ? `${SKILL_CATEGORY_COLORS[c].bg} ${SKILL_CATEGORY_COLORS[c].text}` : 'bg-slate-50 text-slate-400'}`}
+              className={`rounded-xl px-5 py-2.5 text-sm font-semibold transition-all ${category === c ? `${SKILL_CATEGORY_COLORS[c].bg} ${SKILL_CATEGORY_COLORS[c].text}` : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
             >
               {c}
             </button>
@@ -145,7 +146,9 @@ export const SkillForm = ({ initialData, onSubmit, isPending }: SkillFormProps) 
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className="text-sm font-semibold text-slate-400">아이콘 이미지</span>
+        <span className="text-sm font-semibold text-slate-400">
+          아이콘 이미지 <span className="text-red-500">*</span>
+        </span>
         <Alert type="warning">
           <span>
             배경이 투명한 <b>.png</b> 파일만 업로드해주세요.

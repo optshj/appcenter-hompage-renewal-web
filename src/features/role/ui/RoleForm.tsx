@@ -4,7 +4,6 @@ import { Pencil, Plus, Trash2, Loader2 } from 'lucide-react';
 import { useRoleActions, type Role, type RoleForm } from 'entities/role';
 import { Modal } from 'shared/ui/modal';
 import { SaveButton } from 'shared/ui/button';
-import { toast } from 'sonner';
 
 export const AddRoleForm = () => {
   const { addMutation } = useRoleActions();
@@ -24,7 +23,6 @@ export const AddRoleForm = () => {
           onSubmit={async (data) => {
             await addMutation.mutateAsync({ roleName: data.roleName });
             close();
-            toast.success('역할이 추가되었습니다');
           }}
         />
       )}
@@ -51,7 +49,6 @@ export const EditRoleForm = ({ data }: { data: Role }) => {
           onSubmit={async (formData) => {
             await editMutation.mutateAsync({ id: data.roleId, data: formData });
             close();
-            toast.success('역할이 수정되었습니다');
           }}
         />
       )}
@@ -65,7 +62,6 @@ export const DeleteRoleButton = ({ roleId }: { roleId: number }) => {
   const handleDelete = () => {
     if (confirm('정말 삭제하시겠습니까?')) {
       deleteMutation.mutate(roleId);
-      toast.success('역할이 삭제되었습니다');
     }
   };
 
@@ -90,7 +86,9 @@ const RoleForm = ({ initialData, onSubmit, isPending }: { initialData?: Role; on
       className="space-y-4"
     >
       <div className="flex flex-col gap-2">
-        <label className="ml-1 text-sm font-semibold text-slate-400">역할</label>
+        <label className="ml-1 text-sm font-semibold text-slate-400">
+          역할 <span className="text-red-500">*</span>
+        </label>
         <input
           disabled={isPending}
           className="w-full rounded-2xl bg-slate-50 p-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:opacity-60"
