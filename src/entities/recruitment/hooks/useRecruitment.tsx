@@ -3,7 +3,6 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { recruitmentKeys, recruitmentOptions } from '../api/queries';
 import { recruitmentApi } from '../api';
-import { revalidateTag } from 'shared/utils/revalidateTag';
 import { toast } from 'sonner';
 
 export const useRecruitment = () => {
@@ -35,7 +34,6 @@ export const useRecruitmentActions = () => {
   const router = useRouter();
 
   const invalidateRecruitments = async () => {
-    await revalidateTag(recruitmentKeys.all);
     await queryClient.invalidateQueries({ queryKey: recruitmentKeys.lists() });
   };
 

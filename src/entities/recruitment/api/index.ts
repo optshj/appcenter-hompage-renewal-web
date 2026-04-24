@@ -1,14 +1,9 @@
 import { http } from 'shared/utils/http';
 import { Email, Recruitment, RecruitmentList, RecruitmentMetaData } from '../types/recruitment';
-import { recruitmentKeys } from './queries';
 
 export const recruitmentApi = {
   getAll: () => {
-    return http.get<RecruitmentList[]>('/cache/recruitment/public/all', {
-      headers: {
-        'x-cache-tag': recruitmentKeys.all
-      }
-    });
+    return http.get<RecruitmentList[]>('/recruitment/public/all', {});
   },
 
   getById: (id: number) => {
